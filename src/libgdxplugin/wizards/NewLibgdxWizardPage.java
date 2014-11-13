@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
@@ -237,16 +238,12 @@ public class NewLibgdxWizardPage extends WizardPage {
 	 */
 
 	private void handleBrowse() {
-//		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
-//				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-//				"Select new file container");
-//		if (dialog.open() == ContainerSelectionDialog.OK) {
-//			Object[] result = dialog.getResult();
-//			if (result.length == 1) {
-////				containerText.setText(((Path) result[0]).toString());
-//			}
-//		}
-		
+		DirectoryDialog dialog = new DirectoryDialog(getShell());
+		if (dialog.open() == null){
+			return;
+		} else {
+			textProjectDestinationFolder.setText(dialog.open());
+		}
 	}
 
 	/**

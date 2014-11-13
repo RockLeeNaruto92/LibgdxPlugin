@@ -308,12 +308,12 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Multi-page Editor"
+            name="Visual design editor"
             extensions="mpe"
             icon="icons/sample.gif"
-            contributorClass="libgdxplugin.editors.MultiPageEditorContributor"
-            class="libgdxplugin.editors.MultiPageEditor"
-            id="libgdxplugin.editors.MultiPageEditor">
+            contributorClass="libgdxplugin.editors.VisualDesignEditorContributor"
+            class="libgdxplugin.editors.VisualDesignEditor"
+            id="libgdxplugin.editors.VisualDesignEditor">
       </editor>
    </extension>
    <extension
@@ -323,7 +323,7 @@
             id="LibgdxPlugin">
       </category>
       <wizard
-            name="Multi-page Editor file"
+            name="Libgdx project"
             icon="icons/sample.gif"
             category="LibgdxPlugin"
             class="libgdxplugin.wizards.NewLibgdxWizard"

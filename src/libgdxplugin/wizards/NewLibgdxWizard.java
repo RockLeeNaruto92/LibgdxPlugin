@@ -4,9 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -69,29 +73,29 @@ public class NewLibgdxWizard extends Wizard implements
 		System.out.println("folder: " + pDestinationFolder);
 		System.out.println("create desktop: " + isCreateDesktopVersion);
 
-//		IRunnableWithProgress op = new IRunnableWithProgress() {
-//			public void run(IProgressMonitor monitor)
-//					throws InvocationTargetException {
-//				try {
-//					doFinish(pName, pMainPackage, pMainClass,
-//							pDestinationFolder, isCreateDesktopVersion, monitor);
-//				} catch (CoreException e) {
-//					throw new InvocationTargetException(e);
-//				} finally {
-//					monitor.done();
-//				}
-//			}
-//		};
-//		try {
-//			getContainer().run(true, false, op);
-//		} catch (InterruptedException e) {
-//			return false;
-//		} catch (InvocationTargetException e) {
-//			Throwable realException = e.getTargetException();
-//			MessageDialog.openError(getShell(), "Error",
-//					realException.getMessage());
-//			return false;
-//		}
+		IRunnableWithProgress op = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor)
+					throws InvocationTargetException {
+				try {
+					doFinish(pName, pMainPackage, pMainClass,
+							pDestinationFolder, isCreateDesktopVersion, monitor);
+				} catch (CoreException e) {
+					throw new InvocationTargetException(e);
+				} finally {
+					monitor.done();
+				}
+			}
+		};
+		try {
+			getContainer().run(true, false, op);
+		} catch (InterruptedException e) {
+			return false;
+		} catch (InvocationTargetException e) {
+			Throwable realException = e.getTargetException();
+			MessageDialog.openError(getShell(), "Error",
+					realException.getMessage());
+			return false;
+		}
 		return true;
 	}
 
@@ -109,89 +113,37 @@ public class NewLibgdxWizard extends Wizard implements
 		System.out.println("do finissh");
 		monitor.beginTask("Creating project " + projectName, 2);
 		System.out.println("monitor begin task");
-
-		// IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		// IResource resource = root
-		// .findMember(new Path(projectDestinationFolder));
-		//
-		// if (!resource.exists() || !(resource instanceof IContainer)) {
-		// throwCoreException("Folder \"" + projectDestinationFolder
-		// + "\" does not exist.");
-		// }
-
-//		IProjectDescription description = ResourcesPlugin
-//				.getWorkspace().loadProjectDescription(
-//						new Path(
-//								"/home/superman/commandLineUsing/MyLibgdxGame/.project"));
-//		System.out.println("load project path");
-//		System.out.println("descrtion:" + description.getLocationURI());
-//		
-//		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-//				.getProject(description.getName());
-//		project.create(description, null);
-
-		// IContainer container = (IContainer) resource;
-		// final IFile file = container.getFile(new Path(fileName));
-		// try {
-		// InputStream stream = openContentStream();
-		// if (file.exists()) {
-		// file.setContents(stream, true, true, monitor);
-		// } else {
-		// file.create(stream, true, monitor);
-		// }
-		// stream.close();
-		// } catch (IOException e) {
-		// }
-		// monitor.worked(1);
-		// monitor.setTaskName("Opening file for editing...");
-		// getShell().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// IWorkbenchPage page = PlatformUI.getWorkbench()
-		// .getActiveWorkbenchWindow().getActivePage();
-		// try {
-		// IDE.openEditor(page, file, true);
-		// } catch (PartInitException e) {
-		// }
-		// }
-		// });
-//		monitor.worked(1);
+		
+		NewProjectLibgdxCreation creation = new NewProjectLibgdxCreation(projectName, projectMainPackage, projectMainClass, projectDestinationFolder, isCreateDesktopVersion);
+		
+		creation.createMainFolder();
+		String coreDescriptionFilePath = creation.createCoreProject();
+		importProject(monitor, projectName, coreDescriptionFilePath);
+		
+		String androidDesciptionFilePath = creation.createAndroidProject();
+		importProject(monitor, projectName + Constant.EXTENSION_ANDROID, androidDesciptionFilePath);
+		
+		if (isCreateDesktopVersion){
+			String desktopDescriptionFilePath = creation.createDesktopProject();
+			importProject(monitor, projectName + Constant.EXTENSION_ANDROID, desktopDescriptionFilePath);
+		}
+		
+		monitor.worked(1);
 	}
 
-	// public void importProject(IProgressMonitor monitor) throws CoreException
-	// {
-	// String name = "project";
-	// System.out.println("Create the project : " + name);
-	// IProject newProject = ResourcesPlugin.getWorkspace().getRoot()
-	// .getProject(name);
-	//
-	// if (!newProject.exists()) {
-	// IProjectDescription description = ResourcesPlugin.getWorkspace()
-	// .newProjectDescription(newProject.getName());
-	// description.setLocation(location);
-	// if (assertExist() && !location.toFile().exists()) {
-	// System.out.println("ERROR : " + name + " must exist");
-	// } else {
-	// newProject.create(description, monitor);
-	// newProject.open(monitor);
-	// }
-	// } else if (!newProject.isOpen()) {
-	// newProject.open(monitor);
-	// }
-	// }
+	public void importProject(IProgressMonitor monitor, String projectName, String descriptionPath) throws CoreException {
+		IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
-	/**
-	 * We will initialize file contents with a sample text.
-	 */
-
-	private InputStream openContentStream() {
-		String contents = "This is the initial file contents for *.mpe file that should be word-sorted in the Preview page of the multi-page editor";
-		return new ByteArrayInputStream(contents.getBytes());
-	}
-
-	private void throwCoreException(String message) throws CoreException {
-		IStatus status = new Status(IStatus.ERROR, "PluginForLibgdx",
-				IStatus.OK, message, null);
-		throw new CoreException(status);
+		if (!newProject.exists()) {
+			IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(new Path(descriptionPath));
+			newProject.create(description, monitor);
+			newProject.open(monitor);
+			System.out.println("Created project: " + projectName + " with description file: " + descriptionPath);
+		} else if (!newProject.isOpen()) {
+			newProject.open(monitor);
+		}
+		
+		System.out.println("Complete import project " + projectName);
 	}
 
 	/**

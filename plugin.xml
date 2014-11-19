@@ -19,7 +19,7 @@
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="libgdxplugin.builder.Libgdx Nature">
+               class="libgdxplugin.builder.LibgdxNature">
          </run>
       </runtime>
       <builder
@@ -34,9 +34,9 @@
       </category>
       <command
             name="Add/RemoveLibgdx Project Nature"
-            defaultHandler="libgdxplugin.builder.AddRemoveLibgdx NatureHandler"
+            defaultHandler="libgdxplugin.builder.AddRemoveLibgdxNatureHandler"
             categoryId="LibgdxPlugin.libgdxNature.category"
-            id="LibgdxPlugin.addRemoveLibgdx Nature">
+            id="LibgdxPlugin.addRemoveLibgdxNature">
       </command>
       <category
             name="Sample Category"
@@ -53,7 +53,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
          <command
-               commandId="LibgdxPlugin.addRemoveLibgdx Nature"
+               commandId="LibgdxPlugin.addRemoveLibgdxNature"
                label="Disable Sample builder"
                style="push">
             <visibleWhen
@@ -78,7 +78,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="LibgdxPlugin.addRemoveLibgdx Nature"
+               commandId="LibgdxPlugin.addRemoveLibgdxNature"
                label="Enable Sample builder"
                style="push">
             <visibleWhen
@@ -148,10 +148,10 @@
             name="Libgdx Navigator"
             icon="icons/sample.gif"
             class="org.eclipse.ui.navigator.CommonNavigator"
-            id="hust.thubm.test">
+            id="libgdxplugin.navigator">
       </view>
       <category
-            name="Libgdx"
+            name="Libgdx Category"
             id="LibgdxPlugin">
       </category>
       <view
@@ -165,7 +165,7 @@
    <extension
          point="org.eclipse.ui.navigator.viewer">
       <viewerActionBinding
-            viewerId="hust.thubm.test">
+            viewerId="libgdxplugin.navigator">
          <includes>
             <actionExtension
                   pattern="org.eclipse.ui.navigator.resources.*">
@@ -173,7 +173,7 @@
          </includes>
       </viewerActionBinding>
       <viewerContentBinding
-            viewerId="hust.thubm.test">
+            viewerId="libgdxplugin.navigator">
          <includes>
             <contentExtension
                   pattern="org.eclipse.ui.navigator.resourceContent">
@@ -198,7 +198,7 @@
                ratio="0.5"
                relative="org.eclipse.ui.navigator.ProjectExplorer"
                relationship="stack"
-               id="hust.thubm.test">
+               id="libgdxplugin.navigator">
          </view>
       </perspectiveExtension>
       <perspectiveExtension
@@ -215,12 +215,11 @@
          point="org.eclipse.ui.decorators">
       <decorator
             lightweight="true"
-            location="BOTTOM_RIGHT"
             adaptable="true"
-            label="Resource Decorator"
-            icon="icons/sample_decorator.gif"
+            label="Read-only Decorator"
+            class="libgdxplugin.decorators.ReadOnly"
             state="true"
-            id="LibgdxPlugin.decorator">
+            id="libgdxplugin.decorators.ReadOnly">
          <enablement>
             <and>
                <objectClass
@@ -228,7 +227,7 @@
                </objectClass>
                <or>
                   <objectClass
-                        name="org.eclipse.core.resources.IProject">
+                        name="org.eclipse.core.resources.IFolder">
                   </objectClass>
                   <objectClass
                         name="org.eclipse.core.resources.IFile">
@@ -291,11 +290,11 @@
    <extension
          point="org.eclipse.ui.importWizards">
       <category
-            name="Libgdx"
+            name="Libgdx "
             id="libgdxplugin.importWizards.sampleCategory">
       </category>
       <wizard
-            name="Import Libgdx Project"
+            name="Import Libgdx project"
             icon="icons/sample.gif"
             category="libgdxplugin.importWizards.sampleCategory"
             class="libgdxplugin.importWizards.ImportWizard"
@@ -308,26 +307,26 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="Multi-page Editor"
+            name="Visual Editor"
             extensions="mpe"
             icon="icons/sample.gif"
-            contributorClass="libgdxplugin.editors.MultiPageEditorContributor"
-            class="libgdxplugin.editors.MultiPageEditor"
-            id="libgdxplugin.editors.MultiPageEditor">
+            contributorClass="libgdxplugin.editors.VisualEditorContributor"
+            class="libgdxplugin.editors.VisualEditor"
+            id="libgdxplugin.editors.VisualEditor">
       </editor>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="Libgdx"
+            name="Libgdx Wizards"
             id="LibgdxPlugin">
       </category>
       <wizard
-            name="Multi-page Editor file"
+            name="Libgdx project"
             icon="icons/sample.gif"
             category="LibgdxPlugin"
-            class="libgdxplugin.wizards.NewLibgdxWizard"
-            id="libgdxplugin.wizards.NewLibgdxWizard">
+            class="libgdxplugin.wizards.LibgdxNewWizard"
+            id="libgdxplugin.wizards.LibgdxNewWizard">
       </wizard>
    </extension>
    <extension
@@ -353,7 +352,7 @@
             </separator>
          </menu>
          <action
-               label="Libgdx action"
+               label="Libgdx Action"
                class="libgdxplugin.popup.actions.LibgdxAction"
                menubarPath="LibgdxPlugin.menu1/group1"
                enablesFor="1"

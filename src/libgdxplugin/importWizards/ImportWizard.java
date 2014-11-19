@@ -40,7 +40,7 @@ public class ImportWizard extends Wizard implements IImportWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		setWindowTitle("File Import Wizard"); //NON-NLS-1
 		setNeedsProgressMonitor(true);
-		mainPage = new ImportWizardPage("Import Libgdx Project",selection); //NON-NLS-1
+		mainPage = new ImportWizardPage("Import Libgdx project",selection); //NON-NLS-1
 	}
 	
 	/* (non-Javadoc)

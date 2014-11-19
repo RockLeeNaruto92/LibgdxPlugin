@@ -32,7 +32,7 @@ public class LibgdxAction implements IObjectActionDelegate {
 		MessageDialog.openInformation(
 			shell,
 			"LibgdxPlugin",
-			"Libgdx action was executed.");
+			"Libgdx Action was executed.");
 	}
 
 	/**

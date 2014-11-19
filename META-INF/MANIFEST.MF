@@ -4,7 +4,6 @@ Bundle-Name: LibgdxPlugin
 Bundle-SymbolicName: LibgdxPlugin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: libgdxplugin.Activator
-Bundle-Vendor: libgdxPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -20,3 +19,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/org.apache.commons.io.jar,
+ .
+Export-Package: org.apache.commons.io,
+ org.apache.commons.io.filefilter,
+ org.apache.commons.io.input,
+ org.apache.commons.io.output

@@ -28,7 +28,7 @@ public class LibgdxHandler extends AbstractHandler {
 		MessageDialog.openInformation(
 				window.getShell(),
 				"LibgdxPlugin",
-				"Libgdx handle example");
+				"Libgdx example");
 		return null;
 	}
 }

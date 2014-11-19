@@ -32,7 +32,7 @@ public class LibgdxAction implements IWorkbenchWindowActionDelegate {
 		MessageDialog.openInformation(
 			window.getShell(),
 			"LibgdxPlugin",
-			"Libgdx action example");
+			"Libgdx example");
 	}
 
 	/**

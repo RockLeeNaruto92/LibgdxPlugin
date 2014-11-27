@@ -21,7 +21,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/org.apache.commons.io.jar,
  .
-Export-Package: org.apache.commons.io,
- org.apache.commons.io.filefilter,
- org.apache.commons.io.input,
- org.apache.commons.io.output
